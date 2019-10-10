@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    </head>
+    <body>
+        <form id="add-post">
+            <input type="hidden" name="type" value="post" />
+            <input type="text" placeholder="post title" id="title" name="title" />
+            <button type="submit" onclick="loginAction()">Login</button>
+        </form>
+
+    </body>
+    <script type="text/javascript">
+        function loginAction() {
+            var title = document.getElementById("title").value;
+            console.log(title);
+            console.log(title.trim().length);
+            if(title==undefined || title.trim().length<1) {
+                alert("please enter title");
+                return; 
+            } else {
+                var addPostForm = document.getElementById("add-post");
+                addPostForm.action = "/add-new-post";
+                addPostForm.method = "POST";
+                console.log("submit...");
+                addPostForm.submit();   
+            }
+        }
+    </script>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+            <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+    </head>
+    <body>
+          <ul>
+            <li><a href="/posts">back</a></li>
+            <li><a href="/logout">logout</a></li>
+          </ul>
+          <h2><%= postDetail.title %></h2>
+          <p><%= postDetail.description %></p>
+          <span><%= postDetail.by %></span></br>
+          <span><%= postDetail.url %></span></br></br>
+           
+          <div class="comments">
+                  <% 
+                  if (typeof comments != 'undefined' && comments != null) {
+                  comments.forEach( function ( commentData ){
+                      %>
+                        <p>  user(<%= commentData.userName %>) - <%= commentData.comment %> </p>
+                      <% });
+                  } %>
+           
+          </div>
+           
+          <textarea id="comment" rows="3" cols="50"></textarea></br>
+          <input type="hidden" id="postId" value="<%= postId %>">
+          <input type="submit" value="Send" id="send"> 
+    </body>
+    <script type="text/javascript">
+        let ws;
+        let usrname = "<%=userName %>";
+
+        function appendComment(uname, comment) {
+            $('.comments').append("<p>user("+uname+") - "+comment+"</p>");
+            $('#comment').val('');
+        }
+        if ("WebSocket" in window) {
+           alert("WebSocket is supported by your Browser!");
+           
+           // Let us open a web socket
+           ws = new WebSocket("ws://localhost:8383");
+            
+           ws.onopen = function() {
+              // Web Socket is connected
+           };
+            
+           ws.onmessage = function (evt) { 
+              var received_msg = evt.data;
+              var data = JSON.parse(evt.data);
+              appendComment(data.userName, data.message);
+           };
+            
+           ws.onclose = function() { 
+              // websocket is closed.
+              alert("Connection is closed..."); 
+           };
+        } else {
+          
+           // The browser doesn't support WebSocket
+           alert("WebSocket NOT supported by your Browser!");
+        }
+
+        $('#send').click(function(){
+            var comment = $('#comment').val();
+            var postId = $('#postId').val();
+            if(comment != ''){
+                var data = {'type':'comment', 'message': comment,'postId': postId, "ranId": (new Date()).getTime()};
+                appendComment(usrname, comment);
+            }
+            ws.send(JSON.stringify(data));
+        });
+     
+    </script>
+</html>

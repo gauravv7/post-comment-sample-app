@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    </head>
+    <body>
+        <form id="login-form">
+            <input type="text" placeholder="username" id="username" name="username" />
+            <button type="submit" onclick="loginAction()">Login</button>
+        </form>
+
+    </body>
+    <script type="text/javascript">
+        function loginAction() {
+            var userName = document.getElementById("username").value;
+            console.log(userName);
+            console.log(userName.trim().length);
+            if(userName==undefined || userName.trim().length<1) {
+                alert("please enter username");
+                return; 
+            } else {
+                var loginForm = document.getElementById("login-form");
+                loginForm.action = "/login-processing";
+                loginForm.method = "POST";
+                console.log("submit...");
+                loginForm.submit();   
+            }
+        }
+    </script>
+</html>
