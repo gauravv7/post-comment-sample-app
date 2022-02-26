@@ -16,7 +16,7 @@
     "express": "^4.17.1",
     "express-session": "^1.16.2",
     "mongoose": "^5.7.3",
-    "url-parse": "^1.4.7",
+    "url-parse": "^1.5.8",
     "uuid": "^3.3.3",
     "ws": "^7.1.2"
   },
